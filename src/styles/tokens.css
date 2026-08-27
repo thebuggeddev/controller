@@ -1,0 +1,123 @@
+/* ============================================================================
+   DESIGN SYSTEM — single source of truth for the whole interface.
+   Reference design canvas: 1600 x 1000. Every desktop value below is derived
+   from that canvas and expressed as a clamp() so the composition scales
+   proportionally between laptop and ultrawide instead of merely reflowing.
+   ========================================================================== */
+
+:root {
+  /* --- Reference-canvas scaling ------------------------------------------ */
+  /* 1vw at the 1600px reference = 16px. Tokens use vw so the whole hero keeps
+     its proportions; clamps stop it collapsing or ballooning. */
+  --page-x: clamp(20px, 5.5vw, 92px);
+  --page-top: clamp(18px, 4vh, 42px);
+  --page-bottom: clamp(18px, 2.9vh, 30px);
+
+  /* --- Neutral palette ---------------------------------------------------- */
+  --black: #050403;
+  --charcoal: #141210;
+  --white: #ffffff;
+  --gray-100: rgba(255, 255, 255, 0.92);
+  --gray-300: rgba(255, 255, 255, 0.62);
+  --gray-500: rgba(255, 255, 255, 0.42);
+  --gray-700: rgba(255, 255, 255, 0.16);
+
+  --text-primary: var(--gray-100);
+  --text-secondary: var(--gray-300);
+  --text-muted: var(--gray-500);
+
+  /* --- Product-driven theme (mutated at runtime by ThemeController) ------- */
+  --accent: #e9cb92;
+  --accent-strong: #f4dcae;
+  --accent-soft: rgba(233, 203, 146, 0.42);
+  --accent-faint: rgba(233, 203, 146, 0.14);
+  --accent-ink: #17110a; /* text/icon colour that sits on an --accent fill */
+  --product-glow: #6b4a1c;
+  --background: #0b0806;
+
+  /* --- Glass surfaces ----------------------------------------------------- */
+  --glass-bg: rgba(255, 255, 255, 0.062);
+  --glass-bg-strong: rgba(255, 255, 255, 0.085);
+  --glass-border: rgba(255, 255, 255, 0.085);
+  --glass-border-strong: rgba(255, 255, 255, 0.16);
+  --glass-blur: blur(20px) saturate(125%);
+  --glass-highlight: linear-gradient(
+    160deg,
+    rgba(255, 255, 255, 0.09) 0%,
+    rgba(255, 255, 255, 0.015) 42%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  --glass-shadow: 0 18px 44px -18px rgba(0, 0, 0, 0.85);
+
+  /* --- Typography --------------------------------------------------------- */
+  --font-display: 'Archivo', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --font-ui: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+
+  --fs-display: clamp(40px, 4.9vw, 86px);
+  --lh-display: 0.9;
+  --ls-display: -0.022em;
+
+  --fs-category: clamp(11px, 0.94vw, 16px);
+  --ls-category: 0.2em;
+
+  --fs-body: clamp(12.5px, 0.85vw, 15px);
+  --lh-body: 1.62;
+
+  --fs-nav: clamp(12px, 0.88vw, 15px);
+  --fs-button: clamp(11px, 0.79vw, 13.5px);
+  --ls-button: 0.09em;
+
+  --fs-price: clamp(24px, 2.14vw, 38px);
+  --fs-spec-value: clamp(20px, 1.88vw, 33px);
+  --fs-spec-label: clamp(11px, 0.82vw, 14px);
+  --fs-micro: clamp(9px, 0.66vw, 11.5px);
+  --ls-micro: 0.16em;
+
+  /* --- Spacing scale ------------------------------------------------------ */
+  --sp-1: 4px;
+  --sp-2: 8px;
+  --sp-3: 12px;
+  --sp-4: 16px;
+  --sp-5: 22px;
+  --sp-6: 30px;
+  --sp-7: 40px;
+  --sp-8: 56px;
+
+  /* --- Radii -------------------------------------------------------------- */
+  --r-pill: 999px;
+  --r-card-lg: clamp(16px, 1.4vw, 24px);
+  --r-card: clamp(12px, 1.05vw, 18px);
+  --r-arrow: clamp(9px, 0.78vw, 13px);
+
+  /* --- Control dimensions (measured from the reference) ------------------- */
+  --h-pill: clamp(30px, 2.28vw, 40px);
+  --h-utility: clamp(30px, 2.16vw, 38px);
+  --h-cta: clamp(42px, 3.16vw, 55px);
+  --w-cta: clamp(152px, 11.3vw, 198px);
+  --w-arrow: clamp(62px, 5.2vw, 91px);
+  --h-arrow: clamp(38px, 2.78vw, 49px);
+
+  /* --- Motion ------------------------------------------------------------- */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-inout: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-instant: 0.16s;
+  --dur-fast: 0.28s;
+  --dur-base: 0.5s;
+  --dur-slow: 0.9s;
+
+  /* --- Elevation ---------------------------------------------------------- */
+  --z-canvas: 1;
+  --z-veil: 2;
+  --z-ui: 3;
+  --z-overlay: 40;
+  --z-loader: 60;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --dur-instant: 0.01s;
+    --dur-fast: 0.01s;
+    --dur-base: 0.01s;
+    --dur-slow: 0.01s;
+  }
+}

@@ -1,0 +1,334 @@
+/* ============================================================================
+   RESPONSIVE — the desktop stage is the reference composition; tablet and
+   phone are deliberately re-composed rather than scaled down. Below 1024px the
+   page becomes a scrolling column, the WebGL canvas stays fixed behind it, and
+   the product dissolves before the copy can reach it.
+   ========================================================================== */
+
+/* ------------------------------------------------- large desktop polish -- */
+
+@media (min-width: 1600px) {
+  .product-info {
+    width: clamp(340px, 23vw, 420px);
+  }
+}
+
+/* Between 1024 and 1440 the gutters and type sizes stop scaling with the
+   viewport, so the copy column is trimmed to keep clear of the product. */
+@media (min-width: 1024px) and (max-width: 1439px) {
+  :root {
+    --fs-body: 12.5px;
+  }
+  .product-info {
+    width: clamp(206px, 22vw, 318px);
+  }
+  .product-info__description {
+    max-width: 24em;
+  }
+}
+
+/* Short desktop windows: tighten the vertical rhythm so nothing collides. */
+@media (min-width: 1024px) and (max-height: 760px) {
+  :root {
+    --fs-display: clamp(36px, 6.2vh, 62px);
+    --page-top: 20px;
+    --page-bottom: 18px;
+  }
+  .product-info__description {
+    margin-top: 14px;
+  }
+  .product-info__actions {
+    margin-top: 22px;
+  }
+  .carousel {
+    bottom: clamp(24px, 6vh, 60px);
+    gap: clamp(12px, 2.4vh, 24px);
+  }
+}
+
+/* Very short windows drop the promotional card rather than let the bottom row
+   crowd the product. */
+@media (min-width: 1024px) and (max-height: 620px) {
+  .promo-card {
+    display: none;
+  }
+}
+
+/* ------------------------------------------------------- tablet & phone -- */
+
+@media (max-width: 1023px) {
+  body {
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+
+  /* Flatten the desktop scaffolding into one ordered column. `display: contents`
+     lets the semantic grouping stay intact while every piece takes its own
+     place in the mobile hierarchy. */
+  .shell {
+    position: relative;
+    inset: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    min-height: 100svh;
+    padding: var(--page-top) var(--page-x) clamp(40px, 8vh, 90px);
+    pointer-events: auto;
+  }
+
+  .hero,
+  .product-info,
+  .hero__footer {
+    display: contents;
+  }
+
+  .header {
+    position: static;
+    order: 0;
+    margin-bottom: clamp(18px, 4vh, 40px);
+  }
+
+  .header__nav,
+  .indicator,
+  .stage__handle {
+    display: none;
+  }
+
+  .utility-button--menu {
+    display: grid;
+  }
+
+  .product-info__category {
+    order: 1;
+  }
+  .product-info__title {
+    order: 2;
+  }
+
+  /* The band the 3D product is framed into. Its measured position drives the
+     camera, so the model always lands exactly here. */
+  .hero__space {
+    order: 3;
+    display: block;
+    height: clamp(190px, 33vh, 330px);
+  }
+
+  .variants {
+    position: static;
+    order: 4;
+    width: auto;
+    transform: none;
+    margin: 0 calc(var(--page-x) * -1);
+    padding: 0 var(--page-x);
+    overflow-x: auto;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+  .variants::-webkit-scrollbar {
+    display: none;
+  }
+  /* Touch layouts drop the slot system for a plain scrolling row. */
+  .variants__track {
+    position: static;
+    display: flex;
+    height: auto;
+    gap: clamp(10px, 2.6vw, 20px);
+    padding-bottom: 4px;
+  }
+  .variants__item {
+    position: static;
+    height: auto;
+    transform: none;
+  }
+  .variant-card {
+    width: clamp(96px, 26vw, 150px);
+    height: clamp(120px, 33vw, 190px);
+  }
+
+  .carousel {
+    position: static;
+    order: 5;
+    transform: none;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-top: clamp(18px, 3.6vh, 32px);
+    gap: var(--sp-4);
+  }
+
+  .product-info__description {
+    order: 6;
+    margin-top: clamp(22px, 4.4vh, 40px);
+    max-width: 46ch;
+  }
+
+  .product-info__actions {
+    order: 7;
+    margin-top: clamp(18px, 3.4vh, 32px);
+  }
+
+  .spec-cards {
+    order: 8;
+    margin-top: clamp(26px, 5vh, 48px);
+  }
+  .spec-card {
+    flex: 1 1 0;
+    width: auto;
+    max-width: 220px;
+  }
+
+  .promo-card {
+    order: 9;
+    width: 100%;
+    max-width: 420px;
+    margin-top: clamp(16px, 3vh, 28px);
+  }
+}
+
+/* ------------------------------------------------------------- tablet -- */
+
+@media (min-width: 640px) and (max-width: 1023px) {
+  :root {
+    --fs-display: clamp(46px, 7.6vw, 74px);
+    --fs-body: 14.5px;
+  }
+
+  .shell {
+    padding-inline: clamp(30px, 6vw, 64px);
+  }
+
+  /* Tablet keeps the desktop closing row: the promotional card and the
+     specifications sit side by side rather than stacking full-width, which
+     would blow both cards up out of proportion. */
+  .hero__footer {
+    position: static;
+    inset: auto;
+    display: flex;
+    order: 8;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: clamp(16px, 3vw, 34px);
+    margin-top: clamp(26px, 5vh, 48px);
+  }
+
+  .promo-card {
+    width: clamp(240px, 42%, 380px);
+    max-width: none;
+    margin: 0;
+  }
+
+  .spec-cards {
+    margin: 0;
+  }
+
+  .spec-card {
+    flex: 0 0 auto;
+    width: clamp(116px, 16vw, 168px);
+    max-width: none;
+  }
+
+  .variant-card {
+    width: clamp(130px, 19vw, 176px);
+    height: clamp(164px, 24vw, 222px);
+  }
+
+  .product-info__description {
+    max-width: 54ch;
+  }
+}
+
+/* -------------------------------------------------------------- phone -- */
+
+@media (max-width: 639px) {
+  :root {
+    --fs-display: clamp(34px, 12.4vw, 58px);
+    --fs-category: 11px;
+    --fs-body: 13.5px;
+    --fs-price: clamp(24px, 7.4vw, 32px);
+    --fs-spec-value: clamp(21px, 6.6vw, 28px);
+    --page-x: 20px;
+  }
+
+  .product-info__title {
+    letter-spacing: -0.025em;
+  }
+
+  .product-info__actions {
+    gap: var(--sp-5);
+  }
+
+  .cta {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  .spec-cards {
+    gap: 12px;
+  }
+  .spec-card {
+    aspect-ratio: auto;
+    min-height: 118px;
+    padding: 14px;
+  }
+
+  .carousel__buttons {
+    gap: 10px;
+  }
+  .arrow-button {
+    width: 64px;
+    height: 42px;
+  }
+
+  /* Touch targets never drop below the comfortable minimum. */
+  .utility-button {
+    width: 40px;
+    height: 40px;
+  }
+}
+
+/* Landscape phones have almost no vertical room — shrink the product band and
+   let the page carry the rest. */
+@media (max-width: 1023px) and (max-height: 520px) and (orientation: landscape) {
+  .hero__space {
+    height: clamp(130px, 42vh, 220px);
+  }
+  :root {
+    --fs-display: clamp(30px, 6vw, 46px);
+  }
+}
+
+/* ------------------------------------------------------ reduced motion -- */
+
+@media (prefers-reduced-motion: reduce) {
+  .variants__track,
+  .variant-card,
+  .carousel__segment i {
+    transition-duration: 0.01ms !important;
+  }
+  .variant-card:not(.has-artwork)::after,
+  .loader__glow {
+    animation: none;
+  }
+  .promo-card__button:hover,
+  .cta:hover,
+  .utility-button:hover,
+  .variant-card:hover {
+    transform: none;
+  }
+}
+
+/* Desktop-only affordances. */
+@media (max-width: 1023px) {
+  .stage__handle {
+    display: none;
+  }
+}
+
+@media (hover: none) {
+  .nav-pill:hover,
+  .variant-card:hover,
+  .promo-card__button:hover {
+    transform: none;
+  }
+}

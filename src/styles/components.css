@@ -1,0 +1,849 @@
+/* ============================================================================
+   COMPONENTS — every surface is built from the tokens in tokens.css, so the
+   whole interface re-skins from one product configuration.
+   ========================================================================== */
+
+/* Parenthetical typographic device used by the category label and the platform
+   marker; lighter and slightly spaced away from the word it frames. */
+.bracket {
+  font-weight: 300;
+  opacity: 0.72;
+}
+.bracket:first-child {
+  margin-right: 0.5em;
+}
+.bracket:last-child {
+  margin-left: 0.5em;
+}
+
+/* ------------------------------------------------------------------- logo */
+
+.header__logo {
+  display: block;
+  color: var(--accent);
+  transition:
+    color var(--dur-base) var(--ease-out),
+    opacity var(--dur-fast) var(--ease-out);
+}
+.header__logo:hover {
+  opacity: 0.82;
+}
+
+.icon--logo {
+  width: clamp(42px, 3.85vw, 66px);
+  height: auto;
+}
+
+/* ------------------------------------------------------------- nav pills */
+
+.nav-pills {
+  display: flex;
+  align-items: center;
+  gap: clamp(6px, 0.82vw, 14px);
+}
+
+.nav-pill {
+  display: inline-flex;
+  align-items: center;
+  height: var(--h-pill);
+  padding: 0 clamp(12px, 1.32vw, 23px);
+  border: 1px solid var(--accent-soft);
+  border-radius: var(--r-pill);
+  color: var(--accent);
+  font-size: var(--fs-nav);
+  font-weight: 400;
+  letter-spacing: 0.005em;
+  white-space: nowrap;
+  background: transparent;
+  transition:
+    border-color var(--dur-fast) var(--ease-out),
+    color var(--dur-fast) var(--ease-out),
+    background-color var(--dur-fast) var(--ease-out),
+    transform var(--dur-fast) var(--ease-out);
+}
+
+.nav-pill:hover {
+  border-color: var(--accent);
+  color: var(--accent-strong);
+  background: var(--accent-faint);
+}
+.nav-pill:active {
+  transform: translateY(1px);
+}
+
+/* --------------------------------------------------------- utility icons */
+
+.header__utility {
+  display: flex;
+  align-items: center;
+  gap: clamp(7px, 1vw, 17px);
+}
+
+.utility-button {
+  display: grid;
+  place-items: center;
+  width: var(--h-utility);
+  height: var(--h-utility);
+  border-radius: 50%;
+  background: var(--accent);
+  color: var(--accent-ink);
+  transition:
+    background-color var(--dur-base) var(--ease-out),
+    transform var(--dur-fast) var(--ease-out),
+    box-shadow var(--dur-fast) var(--ease-out);
+}
+
+.utility-button .icon {
+  width: 55%;
+  height: 55%;
+}
+
+.utility-button:hover {
+  transform: scale(1.07);
+  box-shadow: 0 0 0 1px var(--accent-faint), 0 6px 18px -8px var(--accent-soft);
+}
+.utility-button:active {
+  transform: scale(0.97);
+}
+
+.utility-button--menu {
+  display: none;
+}
+
+/* ------------------------------------------------------------ product info */
+
+.product-info__category {
+  display: flex;
+  align-items: center;
+  margin-bottom: clamp(8px, 0.95vw, 17px);
+  color: var(--accent);
+  font-size: var(--fs-category);
+  font-weight: 500;
+  letter-spacing: var(--ls-category);
+  line-height: 1;
+  text-transform: uppercase;
+  transition: color var(--dur-base) var(--ease-out);
+}
+
+.product-info__title {
+  font-family: var(--font-display);
+  font-size: var(--fs-display);
+  font-weight: 700;
+  line-height: var(--lh-display);
+  letter-spacing: var(--ls-display);
+  color: var(--white);
+  text-transform: uppercase;
+}
+
+/* Each line clips its own inner span so the copy can slide in from beneath a
+   mask rather than simply fading. */
+.product-info__line {
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.04em;
+}
+
+.product-info__line-inner {
+  display: block;
+  white-space: nowrap;
+}
+
+.product-info__description {
+  margin-top: clamp(14px, 1.95vw, 34px);
+  max-width: 25.5em;
+  color: var(--text-secondary);
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+}
+
+.product-info__actions {
+  display: flex;
+  align-items: center;
+  gap: clamp(18px, 2.27vw, 40px);
+  margin-top: clamp(22px, 2.72vw, 48px);
+}
+
+.product-info__price {
+  font-size: var(--fs-price);
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: -0.012em;
+  color: var(--white);
+}
+
+/* -------------------------------------------------------------------- CTA */
+
+.cta {
+  display: inline-flex;
+  align-items: center;
+  gap: clamp(7px, 0.7vw, 12px);
+  height: var(--h-cta);
+  min-width: var(--w-cta);
+  padding: 0 clamp(16px, 1.6vw, 28px);
+  border-radius: var(--r-pill);
+  background: var(--accent);
+  color: var(--accent-ink);
+  font-size: var(--fs-button);
+  font-weight: 700;
+  letter-spacing: var(--ls-button);
+  text-transform: uppercase;
+  justify-content: center;
+  transition:
+    background-color var(--dur-base) var(--ease-out),
+    transform var(--dur-fast) var(--ease-out),
+    box-shadow var(--dur-fast) var(--ease-out),
+    filter var(--dur-fast) var(--ease-out);
+}
+
+.cta__icon {
+  display: grid;
+  place-items: center;
+  width: clamp(15px, 1.15vw, 20px);
+  height: clamp(15px, 1.15vw, 20px);
+}
+.cta__icon .icon {
+  width: 100%;
+  height: 100%;
+}
+
+.cta:hover {
+  filter: brightness(1.07);
+  transform: translateY(-1px) scale(1.015);
+  box-shadow: 0 14px 34px -14px var(--accent-soft);
+}
+.cta:active {
+  transform: translateY(0) scale(0.99);
+}
+
+/* ------------------------------------------------------ glass card system */
+
+.glass {
+  position: relative;
+  border: 1px solid var(--glass-border);
+  border-radius: var(--r-card);
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  box-shadow: var(--glass-shadow);
+  overflow: hidden;
+  isolation: isolate;
+}
+
+/* A single low-opacity sheen along the top-left edge is what separates a
+   convincing smoked-glass panel from a flat translucent rectangle. */
+.glass::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--glass-highlight);
+  pointer-events: none;
+}
+
+/* ---------------------------------------------------------- variant cards */
+
+.variants {
+  --card-w: clamp(126px, 12.36vw, 214px);
+}
+
+/* Measurable stand-in for the slot unit; `--card-w` is a clamp() and cannot be
+   read back off the custom property directly. */
+.variants__probe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: var(--card-w);
+  height: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+/* Cards are placed into fixed slots and tweened between them, so the rail is a
+   positioning context rather than a flow. */
+.variants__track {
+  position: relative;
+  height: calc(var(--card-w) * 1.316);
+}
+
+.variants__item {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  display: flex;
+  align-items: center;
+  height: calc(var(--card-w) * 1.316);
+  transform: translateY(-50%);
+  will-change: transform;
+}
+
+.variant-card {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: calc(var(--card-w) * 0.786);
+  height: calc(var(--card-w) * 1.113);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--r-card-lg);
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  box-shadow: var(--glass-shadow);
+  overflow: hidden;
+  isolation: isolate;
+  transition:
+    border-color 0.5s var(--ease-out),
+    background-color 0.5s var(--ease-out),
+    box-shadow var(--dur-fast) var(--ease-out);
+}
+
+.variant-card__surface {
+  position: absolute;
+  inset: 0;
+  background: var(--glass-highlight);
+  pointer-events: none;
+}
+
+/* The campaign queued up next sits nearer and reads a little brighter. */
+.variant-card.is-lead {
+  border-color: var(--glass-border-strong);
+  background: var(--glass-bg-strong);
+}
+
+.variant-card:hover {
+  border-color: var(--glass-border-strong);
+  box-shadow: 0 20px 46px -18px rgba(0, 0, 0, 0.9);
+}
+
+.variant-card__media {
+  display: grid;
+  place-items: center;
+  width: 88%;
+  height: 68%;
+}
+
+.variant-card__image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  opacity: 0;
+  filter: drop-shadow(0 12px 22px rgba(0, 0, 0, 0.55));
+  transition: transform var(--dur-base) var(--ease-out);
+}
+
+.variant-card.has-artwork .variant-card__image {
+  opacity: 1;
+}
+.variant-card:hover .variant-card__image {
+  transform: scale(1.05);
+}
+
+/* Until a card's artwork is ready it shows a pool of the product's own light
+   rather than an empty pane. */
+.variant-card:not(.has-artwork)::after {
+  content: '';
+  position: absolute;
+  inset: 22%;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--accent-faint) 0%, transparent 70%);
+  animation: card-pulse 2.4s var(--ease-inout) infinite;
+}
+
+@keyframes card-pulse {
+  0%,
+  100% {
+    opacity: 0.35;
+    transform: scale(0.94);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.04);
+  }
+}
+
+/* --------------------------------------------------------------- carousel */
+
+.carousel__progress {
+  display: flex;
+  align-items: center;
+  gap: clamp(3px, 0.28vw, 5px);
+}
+
+.carousel__segment {
+  position: relative;
+  display: block;
+  width: clamp(20px, 1.77vw, 31px);
+  height: 3px;
+  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.13);
+  overflow: hidden;
+  transition: background-color var(--dur-base) var(--ease-out);
+}
+
+.carousel__segment i {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: var(--accent);
+  transform-origin: left center;
+  transform: scaleX(0);
+  opacity: 0;
+  transition:
+    transform 0.7s var(--ease-out),
+    opacity 0.4s var(--ease-out),
+    background-color var(--dur-base) var(--ease-out);
+}
+
+.carousel__segment.is-active i {
+  transform: scaleX(1);
+  opacity: 1;
+  box-shadow: 0 0 14px var(--accent-soft);
+}
+
+.carousel__buttons {
+  display: flex;
+  align-items: center;
+  gap: clamp(10px, 1.26vw, 22px);
+}
+
+.arrow-button {
+  display: grid;
+  place-items: center;
+  width: var(--w-arrow);
+  height: var(--h-arrow);
+  border-radius: var(--r-arrow);
+  background: var(--accent);
+  color: var(--accent-ink);
+  transition:
+    background-color var(--dur-base) var(--ease-out),
+    transform var(--dur-fast) var(--ease-out),
+    box-shadow var(--dur-fast) var(--ease-out),
+    opacity var(--dur-fast) var(--ease-out);
+}
+
+.arrow-button .icon {
+  width: clamp(20px, 1.65vw, 29px);
+  height: auto;
+  transition: transform var(--dur-fast) var(--ease-out);
+}
+
+.arrow-button:hover {
+  box-shadow: 0 10px 26px -12px var(--accent-soft);
+}
+.arrow-button--prev:hover .icon {
+  transform: translateX(-3px);
+}
+.arrow-button--next:hover .icon {
+  transform: translateX(3px);
+}
+.arrow-button:active {
+  transform: scale(0.96);
+}
+.arrow-button:disabled {
+  opacity: 0.45;
+  cursor: default;
+  transform: none;
+  box-shadow: none;
+}
+
+/* -------------------------------------------------------------- indicator */
+
+.indicator__arc {
+  width: clamp(14px, 1.4vw, 24px);
+  height: clamp(62px, 6.1vw, 105px);
+}
+
+.indicator__label {
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  font-size: var(--fs-category);
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  line-height: 1;
+}
+
+.indicator__label .bracket:first-child {
+  margin: 0 0 0.5em;
+}
+.indicator__label .bracket:last-child {
+  margin: 0.5em 0 0;
+}
+
+/* ------------------------------------------------------------- promo card */
+
+.promo-card {
+  width: clamp(196px, 17.34vw, 302px);
+}
+
+.promo-card__button {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 275 / 176;
+  border: 1px solid var(--glass-border);
+  border-radius: var(--r-card);
+  background: #0b0a09;
+  overflow: hidden;
+  isolation: isolate;
+  box-shadow: var(--glass-shadow);
+  transition:
+    transform var(--dur-base) var(--ease-out),
+    box-shadow var(--dur-base) var(--ease-out),
+    border-color var(--dur-base) var(--ease-out);
+}
+
+.promo-card__art {
+  position: absolute;
+  inset: 0;
+}
+
+/* Cinematic wash built from the campaign's own colour identity. */
+.promo-card__wash {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(120% 90% at 78% 62%, var(--accent-faint) 0%, transparent 62%),
+    radial-gradient(90% 120% at 18% 8%, color-mix(in srgb, var(--product-glow) 55%, transparent) 0%, transparent 68%),
+    linear-gradient(155deg, #191411 0%, #0a0807 58%, #050403 100%);
+  transition: background var(--dur-slow) var(--ease-out);
+}
+
+.promo-card__grain {
+  position: absolute;
+  inset: 0;
+  opacity: 0.4;
+  background-image: repeating-linear-gradient(
+      115deg,
+      rgba(255, 255, 255, 0.028) 0 1px,
+      transparent 1px 5px
+    ),
+    repeating-linear-gradient(65deg, rgba(255, 255, 255, 0.02) 0 1px, transparent 1px 7px);
+}
+
+.promo-card__figure {
+  position: absolute;
+  right: 3%;
+  bottom: 3%;
+  width: 58%;
+  height: 62%;
+  display: grid;
+  place-items: center;
+  transition: transform var(--dur-slow) var(--ease-out);
+}
+
+.promo-card__image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 16px 26px rgba(0, 0, 0, 0.7));
+}
+
+.promo-card__corner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: clamp(24px, 2.3vw, 42px);
+  height: auto;
+  opacity: 0.9;
+}
+
+.promo-card__copy {
+  position: absolute;
+  z-index: 1;
+  top: clamp(11px, 1.08vw, 19px);
+  left: clamp(13px, 1.26vw, 22px);
+  padding-right: 0.6em;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.75);
+  display: flex;
+  flex-direction: column;
+  gap: clamp(4px, 0.42vw, 8px);
+  text-align: left;
+}
+
+.promo-card__title {
+  font-family: var(--font-display);
+  font-size: clamp(11px, 0.95vw, 17px);
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--white);
+}
+
+.promo-card__caption {
+  font-size: var(--fs-micro);
+  letter-spacing: var(--ls-micro);
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.promo-card__play {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: grid;
+  place-items: center;
+  width: clamp(34px, 3.15vw, 55px);
+  height: clamp(34px, 3.15vw, 55px);
+  border-radius: 50%;
+  background: #fff;
+  color: #0d0b0a;
+  box-shadow:
+    0 0 0 6px rgba(0, 0, 0, 0.18),
+    0 10px 28px -8px rgba(0, 0, 0, 0.85);
+  transition:
+    transform var(--dur-base) var(--ease-out),
+    background-color var(--dur-fast) var(--ease-out);
+}
+
+.promo-card__play .icon {
+  width: 46%;
+  height: 46%;
+  margin-left: 8%;
+}
+
+.promo-card__duration {
+  position: absolute;
+  right: clamp(9px, 0.85vw, 15px);
+  bottom: clamp(8px, 0.8vw, 14px);
+  padding: 0.25em 0.6em;
+  border-radius: var(--r-pill);
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(6px);
+  font-size: var(--fs-micro);
+  letter-spacing: 0.06em;
+  color: rgba(255, 255, 255, 0.78);
+}
+
+.promo-card__button:hover {
+  transform: translateY(-3px);
+  border-color: var(--glass-border-strong);
+  box-shadow: 0 26px 50px -22px rgba(0, 0, 0, 0.9);
+}
+.promo-card__button:hover .promo-card__figure {
+  transform: scale(1.06);
+}
+.promo-card__button:hover .promo-card__play {
+  transform: translate(-50%, -50%) scale(1.08);
+  background: #fff;
+}
+.promo-card__button:active {
+  transform: translateY(-1px);
+}
+
+/* -------------------------------------------------------------- spec cards */
+
+.spec-cards {
+  display: flex;
+  align-items: flex-end;
+  gap: clamp(10px, 1.64vw, 28px);
+}
+
+.spec-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: clamp(104px, 10.34vw, 180px);
+  aspect-ratio: 164 / 176;
+  padding: clamp(12px, 1.4vw, 24px);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--r-card);
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  box-shadow: var(--glass-shadow);
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.spec-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--glass-highlight);
+  pointer-events: none;
+}
+
+.spec-card__icon {
+  color: var(--accent);
+  transition: color var(--dur-base) var(--ease-out);
+}
+.spec-card__icon .icon {
+  width: clamp(19px, 1.72vw, 30px);
+  height: auto;
+}
+
+.spec-card__body {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(2px, 0.28vw, 5px);
+}
+
+.spec-card__value {
+  font-family: var(--font-display);
+  font-size: var(--fs-spec-value);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.015em;
+  color: var(--white);
+}
+
+.spec-card__label {
+  font-size: var(--fs-spec-label);
+  line-height: 1.2;
+  color: var(--text-secondary);
+}
+
+/* ------------------------------------------------------------ mobile menu */
+
+.mobile-menu[hidden] {
+  display: none;
+}
+
+.mobile-menu {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-overlay);
+  display: grid;
+  place-items: center;
+  background: rgba(5, 4, 3, 0.88);
+  backdrop-filter: blur(26px) saturate(120%);
+  -webkit-backdrop-filter: blur(26px) saturate(120%);
+}
+
+.mobile-menu__panel {
+  width: min(560px, 86vw);
+}
+
+.mobile-menu__list {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(6px, 1.4vh, 14px);
+}
+
+.mobile-menu__item a {
+  display: flex;
+  align-items: baseline;
+  gap: 1em;
+  padding: 0.5em 0;
+  border-bottom: 1px solid var(--accent-faint);
+  font-family: var(--font-display);
+  font-size: clamp(28px, 8vw, 46px);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  color: var(--white);
+  transition: color var(--dur-fast) var(--ease-out);
+}
+
+.mobile-menu__item a:hover {
+  color: var(--accent);
+}
+
+.mobile-menu__index {
+  font-family: var(--font-ui);
+  font-size: var(--fs-micro);
+  font-weight: 500;
+  letter-spacing: var(--ls-micro);
+  color: var(--accent);
+}
+
+/* ------------------------------------------------------------------ loader */
+
+.loader {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-loader);
+  display: grid;
+  place-items: center;
+  background: var(--black);
+}
+
+.loader__glow {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    46% 42% at 50% 52%,
+    color-mix(in srgb, var(--product-glow) 42%, transparent) 0%,
+    transparent 68%
+  );
+  animation: loader-breathe 3.4s var(--ease-inout) infinite;
+}
+
+@keyframes loader-breathe {
+  0%,
+  100% {
+    opacity: 0.55;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.loader__mark {
+  position: relative;
+  color: var(--accent);
+  transform: translateY(-8vh);
+}
+.loader__mark .icon--logo {
+  width: clamp(64px, 7vw, 104px);
+}
+
+.loader__meta {
+  position: absolute;
+  left: 50%;
+  bottom: clamp(48px, 9vh, 96px);
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(10px, 1.4vh, 18px);
+  width: min(320px, 70vw);
+}
+
+.loader__label {
+  display: flex;
+  align-items: center;
+  font-size: var(--fs-micro);
+  letter-spacing: var(--ls-micro);
+  text-transform: uppercase;
+  color: var(--accent);
+  white-space: nowrap;
+}
+
+.loader__bar {
+  position: relative;
+  width: 100%;
+  height: 2px;
+  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.1);
+  overflow: hidden;
+}
+
+.loader__bar i {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: var(--accent);
+  transform-origin: left center;
+  transform: scaleX(0);
+  box-shadow: 0 0 14px var(--accent-soft);
+}
+
+.loader__percent {
+  font-size: var(--fs-micro);
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ------------------------------------------------------------------ notice */
+
+.webgl-notice {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  max-width: 34ch;
+  text-align: center;
+  color: var(--text-secondary);
+}

@@ -1,0 +1,33 @@
+{
+  "name": "ps5-controller-showcase",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "models": "node scripts/optimize-models.mjs",
+    "brush": "node scripts/make-brush.mjs",
+    "verify": "node scripts/audit.mjs && node scripts/behaviour.mjs && node scripts/perf.mjs",
+    "photos": "node scripts/prepare-photography.mjs"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "private": "true",
+  "devDependencies": {
+    "@gltf-transform/cli": "^4.4.2",
+    "@types/node": "^26.2.0",
+    "@types/three": "^0.185.4",
+    "playwright": "^1.62.1",
+    "typescript": "^7.0.2",
+    "vite": "^8.2.2",
+    "vite-plugin-glsl": "^1.6.1"
+  },
+  "dependencies": {
+    "gsap": "^3.15.0",
+    "three": "^0.185.1"
+  }
+}

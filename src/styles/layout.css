@@ -1,0 +1,156 @@
+/* ============================================================================
+   LAYOUT — desktop composition.
+   Positions are derived from the 1600 × 1000 reference canvas: the page gutter,
+   the optical axis of the product, the rail the variant carousel slides along,
+   and the baseline the bottom cards sit on.
+   ========================================================================== */
+
+/* The WebGL stage sits behind everything, fixed to the viewport, so the
+   atmosphere reads as the page background at every breakpoint. */
+.stage {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-canvas);
+}
+
+.stage__canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* The rotate affordance on the floor ellipse. It is a cue, not a control — the
+   whole product responds to a drag, so the handle must not swallow one. */
+.stage__handle {
+  pointer-events: none;
+  position: absolute;
+  left: 49.5%;
+  top: 71.3%;
+  z-index: var(--z-ui);
+  display: grid;
+  place-items: center;
+  width: clamp(28px, 2.3vw, 40px);
+  height: clamp(15px, 1.24vw, 22px);
+  transform: translate(-50%, -50%);
+  border-radius: var(--r-pill);
+  background: var(--accent);
+  color: var(--accent-ink);
+  box-shadow: 0 0 22px -4px var(--accent-soft);
+  transition: background var(--dur-base) var(--ease-out);
+}
+
+.stage__handle .icon {
+  width: 68%;
+  height: auto;
+}
+
+/* The interface layer. It never intercepts the pointer wholesale — only the
+   controls themselves do — so the product keeps the full frame. */
+.shell {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-ui);
+  pointer-events: none;
+}
+
+.shell > *,
+.hero > * {
+  pointer-events: auto;
+}
+
+/* ------------------------------------------------------------------ header */
+
+.header {
+  position: absolute;
+  top: var(--page-top);
+  left: var(--page-x);
+  right: var(--page-x);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-4);
+  min-height: var(--h-pill);
+}
+
+.header__nav {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/* The band reserved for the product on the scrolling layouts. It doubles as the
+   surface that turns the controller when dragged. */
+.hero__space {
+  display: none;
+}
+
+/* --------------------------------------------------------------------- hero */
+
+.hero {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.product-info {
+  position: absolute;
+  left: var(--page-x);
+  top: 50%;
+  transform: translateY(-50%);
+  width: clamp(268px, 24vw, 392px);
+  max-width: calc(100vw - var(--page-x) * 2);
+}
+
+.indicator {
+  position: absolute;
+  right: var(--page-x);
+  top: 14.8%;
+  display: flex;
+  align-items: flex-start;
+  gap: clamp(6px, 0.6vw, 12px);
+  color: var(--accent);
+}
+
+/* The variant rail: the active card's leading edge lands here and the rest of
+   the catalogue continues past the right edge of the frame. */
+.variants {
+  position: absolute;
+  left: 73.9%;
+  top: 50%;
+  width: calc(100vw - 73.9vw);
+  transform: translateY(-50%);
+  /* Clipped on the leading edge so cards the carousel has already passed slide
+     out of frame, while the ones still to come run off the right of the window.
+     The vertical padding keeps card shadows and hover lift from being cut. */
+  padding: clamp(18px, 2vw, 34px) 0;
+  overflow: hidden;
+}
+
+.carousel {
+  position: absolute;
+  left: 49.3%;
+  bottom: clamp(30px, 8.27vh, 92px);
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(16px, 3.7vh, 40px);
+}
+
+/* ------------------------------------------------------------------ footer */
+
+.hero__footer {
+  position: absolute;
+  left: var(--page-x);
+  right: var(--page-x);
+  bottom: var(--page-bottom);
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--sp-5);
+  pointer-events: none;
+}
+
+.hero__footer > * {
+  pointer-events: auto;
+}
