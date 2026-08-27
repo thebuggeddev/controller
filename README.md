@@ -353,7 +353,9 @@ resolved where it is used, so reading it directly silently yields a fallback.
 Desktop is the fixed reference stage. Below 1024px the page becomes a scrolling
 column — the canvas stays fixed behind it, and the product **dissolves as content
 scrolls up to meet it**, so copy never crosses the model while the atmosphere
-remains. The band the product is framed into is measured from the DOM and fed back
+remains. A change owns the product's opacity outright while it runs: writing it
+from the scroll handler at the same time was enough to reveal a controller the
+change meant to keep hidden, or hide one it had just brought in. The band the product is framed into is measured from the DOM and fed back
 to the camera, so the model always lands exactly in the space the layout reserves.
 
 - **Tablet** keeps the desktop closing row (promotional card beside the specs).
@@ -392,6 +394,9 @@ screenshots cannot see:
 - **Presence.** The product's total opacity never leaves 1.0 during a change —
   below it the hero dims and reads as a blink, above it two products are sharing
   the frame and ghosting.
+- **Cold switching.** On a phone profile, where no campaign is preloaded, a
+  change still swaps the product on screen and leaves exactly one painting — and
+  a change made while scrolled past the hero is still there on scrolling back.
 
 Both bugs leave no trace in a screenshot taken a frame either side of one, and a
 sampled-screenshot pass gave the first a clean bill twice before this existed.

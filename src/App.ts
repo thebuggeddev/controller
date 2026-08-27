@@ -207,11 +207,37 @@ export class App {
 
     setState({ phase: 'transitioning', index, previousIndex: from, direction });
     this.controls.setBusy(true);
+    this.updateDocument(product);
+
+    // The model is made ready *before* the timeline exists, never during it.
+    //
+    // Campaigns are preloaded on desktop, so this usually resolves in a tick.
+    // On a phone they are not — the memory is better spent elsewhere — and the
+    // model has to be fetched and compiled, which can take seconds. Awaiting
+    // that with the timeline already running meant every tween had played out
+    // by the time the scene had anything to animate: the interface changed, the
+    // product did not, and the old one stayed on screen until an unrelated
+    // scroll happened to make the new one visible.
+    try {
+      await this.scene.prepare(product);
+    } catch (error) {
+      console.error('[showcase] could not prepare campaign', product.id, error);
+      setState({ phase: 'idle' });
+      this.controls.setBusy(false);
+      return;
+    }
+
+    // The visitor may have moved on while that was loading.
+    if (getState().index !== index) {
+      this.controls.setBusy(false);
+      return;
+    }
 
     const timeline = gsap.timeline({
       onComplete: () => {
         setState({ phase: 'idle' });
         this.controls.setBusy(false);
+        this.scene.settleScrollFade();
         const queued = this.queued;
         this.queued = null;
         if (queued !== null && queued !== getState().index) void this.transition(queued);
@@ -224,9 +250,9 @@ export class App {
     this.controls.transition(index, timeline, 0.12);
     this.promo.transition(product, timeline, 0.06);
     this.specs.transition(product, timeline, 0.08);
-    this.updateDocument(product);
 
-    await this.scene.transitionTo(product, direction, timeline);
+    // Synchronous now: everything it needs is already in memory.
+    this.scene.transitionTo(product, direction, timeline);
 
     // Keep the promotional still in step with the campaign on show. Captures
     // are held until the change has finished so they never share a frame with
@@ -243,11 +269,6 @@ export class App {
       undefined,
       '>',
     );
-
-    // Guarantee the interface settles even if the scene resolves late.
-    if (!timeline.isActive() && timeline.duration() === 0) {
-      timeline.progress(1);
-    }
   }
 
   /**

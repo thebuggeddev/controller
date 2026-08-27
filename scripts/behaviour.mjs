@@ -187,6 +187,66 @@ const cards_expected = (rail) => 3;
   await page.close();
 }
 
+/* ---- 1e. a change must complete on a device that does not preload ---- */
+{
+  // Phones keep only the campaign on show in memory, so a change there has to
+  // fetch and compile a model first — seconds, not a tick. Starting the timeline
+  // before that resolved meant every tween had played out by the time the scene
+  // had anything to animate: the copy changed, the product did not, and the old
+  // one stayed on screen until an unrelated scroll happened to reveal the new
+  // one. The model is prepared before the timeline exists now.
+  const page = await browser.newPage({
+    viewport:{width:390,height:844}, hasTouch:true, isMobile:true, deviceScaleFactor:3,
+  });
+  const errs=[]; page.on('pageerror',e=>errs.push(e.message));
+  await page.goto(BASE);
+  await page.waitForFunction(()=>!document.querySelector('.loader'), null, {timeout:180000});
+  await page.waitForTimeout(6000);
+
+  const read = () => page.evaluate(() => {
+    const s = window.__scene;
+    let painting = 0;
+    s.scene.traverse(o => {
+      if (!o.isMesh || o.name.endsWith('__depth')) return;
+      if (o.material?.isMeshBasicNodeMaterial) return;      // the floor planes
+      let hidden = false;
+      for (let n = o; n; n = n.parent) if (n.visible === false) hidden = true;
+      const g = o.parent?.parent?.parent;
+      if (g && Math.abs(g.position.x) > 5) return;          // parked for compile
+      if (!hidden && (o.material?.opacity ?? 1) > 0.02) painting++;
+    });
+    return { title: document.querySelector('.product-info__line-inner')?.textContent, painting };
+  });
+
+  const before = await read();
+  await page.click('.arrow-button--next');
+  // The controls stay disabled for as long as the model takes to arrive.
+  await page.waitForFunction(
+    () => !document.querySelector('.arrow-button--next').disabled, null, {timeout:90000},
+  );
+  await page.waitForTimeout(1200);
+  const after = await read();
+
+  console.log(`cold switch: "${before.title}" -> "${after.title}", ${after.painting} product(s) painting`);
+  ok('a cold switch changes the product on screen', after.title !== before.title);
+  ok('a cold switch leaves exactly one product painting', after.painting === 1);
+  ok('no page errors on a cold switch', errs.length === 0);
+
+  // Switching while scrolled past the hero, then returning, must leave the new
+  // product visible — the scroll fade and the change both write opacity.
+  await page.evaluate(()=>window.scrollTo(0, 700));
+  await page.waitForTimeout(800);
+  await page.click('.arrow-button--next');
+  await page.waitForFunction(
+    () => !document.querySelector('.arrow-button--next').disabled, null, {timeout:90000},
+  );
+  await page.evaluate(()=>window.scrollTo(0, 0));
+  await page.waitForTimeout(1400);
+  const restored = await read();
+  ok('a change made while scrolled restores on scrolling back', restored.painting === 1);
+  await page.close();
+}
+
 /* ---- 2. keyboard navigation ---- */
 {
   const page = await browser.newPage({ viewport:{width:1440,height:900} });
@@ -239,7 +299,12 @@ const cards_expected = (rail) => 3;
     });
   }
   await cdp.send('Input.dispatchTouchEvent', { type:'touchEnd', touchPoints:[] });
-  await page.waitForTimeout(2600);
+  // A swipe on a device that does not preload has to fetch a model first, so
+  // wait for the change to settle rather than for a fixed interval.
+  await page.waitForFunction(
+    () => !document.querySelector('.arrow-button--next').disabled, null, {timeout:90000},
+  );
+  await page.waitForTimeout(1200);
   const swiped = await page.evaluate(()=>document.querySelector('.product-info__line-inner').textContent);
   ok('swipe advances the carousel (got "'+swiped+'")', swiped==='GENSHIN');
 

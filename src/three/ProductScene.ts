@@ -122,6 +122,7 @@ export class ProductScene {
   private running = false;
   private lastTime = 0;
   private scrollFade = 1;
+  private transitioning = false;
   private disposed = false;
 
   private maxAnisotropy = 16;
@@ -622,6 +623,17 @@ export class ProductScene {
     return !/(^| )(slow-)?2g$/.test(connection.effectiveType ?? '');
   }
 
+  /**
+   * Makes a campaign's model ready to show: fetched, decoded and compiled.
+   *
+   * Callers must await this before starting a transition. It resolves in a tick
+   * once a model is in memory, and can take seconds the first time on a device
+   * that does not preload.
+   */
+  async prepare(product: Product): Promise<void> {
+    await this.ensureModel(product);
+  }
+
   /** Loads and warms a campaign's model without displaying it. */
   async preload(product: Product): Promise<void> {
     try {
@@ -704,17 +716,21 @@ export class ProductScene {
    * Choreographs a campaign change onto a caller-supplied timeline so the UI,
    * the model, the lighting and the atmosphere all resolve as one motion.
    */
-  async transitionTo(
-    product: Product,
-    direction: 1 | -1,
-    timeline: gsap.core.Timeline,
-  ): Promise<void> {
-    const next = await this.ensureModel(product);
+  transitionTo(product: Product, direction: 1 | -1, timeline: gsap.core.Timeline): void {
+    const next = this.models.get(product.id);
+    if (!next) {
+      // `prepare` is the contract; without it there is nothing to animate and
+      // the timeline would run to completion against an empty scene.
+      console.error('[showcase] transitionTo called before prepare', product.id);
+      return;
+    }
     const outgoing = this.current;
     if (outgoing === next) {
       this.applyTheme(product, false, timeline);
       return;
     }
+
+    this.transitioning = true;
 
     const reduced = prefersReducedMotion();
 
@@ -889,12 +905,33 @@ export class ProductScene {
     const clamped = MathUtils.clamp(value, 0, 1);
     if (Math.abs(clamped - this.scrollFade) < 0.004) return;
     this.scrollFade = clamped;
+    this.applyScrollFade();
+  }
+
+  /**
+   * Hands the product's opacity back to the scroll position once a change has
+   * finished, and re-applies whatever the visitor scrolled to meanwhile.
+   */
+  settleScrollFade() {
+    this.transitioning = false;
+    this.applyScrollFade();
+  }
+
+  private applyScrollFade() {
+    const value = this.scrollFade;
+    // The floor and the stage follow the scroll at all times.
+    this.ground.uContact.value = value;
+    this.stage.visible = value > 0.01;
+
+    // The product's own opacity, though, belongs to a change while one is
+    // running. Writing it from a scroll handler at the same time was enough to
+    // reveal a controller the change meant to keep hidden, or hide one it had
+    // just brought in.
+    if (this.transitioning) return;
     const model = this.current;
     if (!model) return;
-    if (clamped > 0.995) model.settle();
-    else model.setOpacity(clamped);
-    this.ground.uContact.value = clamped;
-    this.stage.visible = clamped > 0.01;
+    if (value > 0.995) model.settle();
+    else model.setOpacity(value);
   }
 
   get element(): HTMLCanvasElement {

@@ -398,6 +398,25 @@
   box-shadow: 0 0 14px var(--accent-soft);
 }
 
+/* While a change is being prepared the progress mark breathes. On a phone the
+   model has to be fetched before anything can move, and a swipe that is simply
+   ignored for a second reads as the page having missed it. */
+.carousel.is-busy .carousel__segment.is-active i {
+  animation: segment-busy 1.1s var(--ease-inout) infinite;
+}
+
+@keyframes segment-busy {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scaleX(1);
+  }
+  50% {
+    opacity: 0.45;
+    transform: scaleX(0.55);
+  }
+}
+
 .carousel__buttons {
   display: flex;
   align-items: center;
